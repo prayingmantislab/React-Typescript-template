@@ -24,15 +24,26 @@ function hasProp (obj,prop){
 // console.log(Object.values(myObject))
 
 const asi = {
-    first:'et',
-    second:'micha'
+    member1:'et',
+    member2:'micha'
 }
 
 const liran = {
-  first:'gal',
-  second:'ben',
-  third:'raz'
+  member3:'gal',
+  member4:'ben',
+  member5:'raz'
+}
+//write a function that returns the combined objects into one
+//[x] name the function
+//[ ] input/output
+//[x] choose the method
+
+
+
+
+const mergeObjects = (object1,object2)=>{
+ return Object.assign({},object1,object2)
 }
 
-const family = { ...asi,...liran}
-console.log(family)
+const result =mergeObjects(asi,liran)
+console.log(result)

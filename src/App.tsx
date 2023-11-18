@@ -1,48 +1,43 @@
-import React from 'react';
-import { useQuery } from 'react-query';
-import axios, { AxiosError } from 'axios';
-import { type } from 'os';
+import { useEffect, useState } from 'react';
+import breakify from './helper/breakify';
+import BreakingLogo from './components/BreakingLogo';
+const App = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [first, setFirst] = useState(['', '', '']);
+  const [last, setLast] = useState(['', '', '']);
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-type Data = User[];
-interface ErrorWithMessage {
-  message: string;
-}
+  useEffect(() => {
+    setFirst(breakify(firstName));
+  }, [firstName]);
 
-const fetchData = async (): Promise<Data> => {
-  const response = await axios.get<Data>(
-    'https://jsonplaceholder.typicode.com/users'
-  );
-  return response.data;
-  console.log(response.data);
-};
-
-const App: React.FC = () => {
-  const { isLoading, error, data } = useQuery<Data, AxiosError>(
-    'repoData',
-    fetchData
-  );
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error)
-    return (
-      <div>An error has occurred: {(error as ErrorWithMessage).message}</div>
-    );
-
-  // render your data here
+  useEffect(() => {
+    setLast(breakify(lastName));
+  }, [lastName]);
   return (
-    <div className='App'>
-      {data?.map((user: User) => (
-        <div key={user.name}>
-          <h1>{user.name}</h1>
+    <div className='app'>
+      <div className='content'>
+        <BreakingLogo result={first} />
+        <BreakingLogo result={last} />
+        <div className='row'>
+          <div className='col'>
+            <label> First Name</label>
+            <input
+              onChange={(ev) => setFirstName(ev.target.value)}
+              value={firstName}
+            />
+          </div>
+          <div className='col'>
+            <label>Last Name</label>
+            <input
+              onChange={(ev) => setLastName(ev.target.value)}
+              value={lastName}
+            />
+          </div>
         </div>
-      ))}
+        <button>Breakify</button>
+      </div>
     </div>
   );
 };
-
 export default App;
